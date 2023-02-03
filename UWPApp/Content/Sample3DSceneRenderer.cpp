@@ -179,9 +179,21 @@ void Sample3DSceneRenderer::Render()
 		0
 		);
 
+
 	context->VSSetShader(m_vertexShader1.Get(), nullptr, 0);
+	context->PSSetShader(
+		m_pixelShader1.Get(),
+		nullptr,
+		0
+	);
 	context->DrawIndexed(m_indexCount, 0, 0);
+
 	context->VSSetShader(m_vertexShader2.Get(), nullptr, 0);
+	context->PSSetShader(
+		m_pixelShader2.Get(),
+		nullptr,
+		0
+	);
 	context->DrawIndexed(m_indexCount, 0, 0);
 
 }
@@ -221,7 +233,29 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 			);
 	});
 
+	// After the pixel shader file is loaded, create the shader and constant buffer.
+	auto createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreatePixelShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_pixelShader
+			)
+		);
+
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+				&constantBufferDesc,
+				nullptr,
+				&m_constantBuffer
+			)
+		);
+		});
+
 	loadVSTask = DX::ReadDataAsync(L"SampleVertexShader1.cso");
+	loadPSTask = DX::ReadDataAsync(L"SamplePixelShader1.cso");
 	// After the vertex shader file is loaded, create the shader and input layout.
 	createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
 		DX::ThrowIfFailed(
@@ -250,7 +284,30 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 		);
 		});
 
+
+	// After the pixel shader file is loaded, create the shader and constant buffer.
+	createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreatePixelShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_pixelShader1
+			)
+		);
+
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+				&constantBufferDesc,
+				nullptr,
+				&m_constantBuffer
+			)
+		);
+		});
+
 	loadVSTask = DX::ReadDataAsync(L"SampleVertexShader2.cso");
+	loadPSTask = DX::ReadDataAsync(L"SamplePixelShader2.cso");
 	// After the vertex shader file is loaded, create the shader and input layout.
 	createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
 		DX::ThrowIfFailed(
@@ -279,27 +336,26 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 		);
 		});
 
-
 	// After the pixel shader file is loaded, create the shader and constant buffer.
-	auto createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
+	createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreatePixelShader(
 				&fileData[0],
 				fileData.size(),
 				nullptr,
-				&m_pixelShader
-				)
-			);
+				&m_pixelShader2
+			)
+		);
 
-		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer) , D3D11_BIND_CONSTANT_BUFFER);
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
 				&constantBufferDesc,
 				nullptr,
 				&m_constantBuffer
-				)
-			);
-	});
+			)
+		);
+		});
 
 	// Once both shaders are loaded, create the mesh.
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {

@@ -38,6 +38,8 @@ namespace UWPApp
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11VertexShader>  m_vertexShader1;
 		Microsoft::WRL::ComPtr<ID3D11VertexShader>  m_vertexShader2;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader1;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader2;
 
 		// System resources for cube geometry.
 		ModelViewProjectionConstantBuffer	m_constantBufferData;
