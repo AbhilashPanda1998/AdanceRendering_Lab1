@@ -20,11 +20,17 @@ struct PixelShaderInput
 PixelShaderInput main(VertexShaderInput input)
 {
 	PixelShaderInput output;
-	float4 pos = float4(input.pos, 1.0f);
+	//float4 pos = float4(input.pos, 1.0f);
+
+	float3 inPos = input.pos;
+	inPos.xyz *= float3(10, 1, 10);
+	inPos.xyz -= float3(0, 1, 0);
+	float4 pos= float4(inPos, 1.0f);
 
 	pos = mul(pos, model);
 	pos = mul(pos, view);
 	pos = mul(pos, projection);
+
 	output.pos = pos;
 
 	output.color = input.color;

@@ -75,7 +75,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
 		float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
 
-		Rotate(radians);
+		Rotate(0.0f);
 	}
 }
 
@@ -178,10 +178,17 @@ void Sample3DSceneRenderer::Render()
 		0,
 		0
 		);
+
+	context->VSSetShader(m_vertexShader1.Get(), nullptr, 0);
+	context->DrawIndexed(m_indexCount, 0, 0);
+	context->VSSetShader(m_vertexShader2.Get(), nullptr, 0);
+	context->DrawIndexed(m_indexCount, 0, 0);
+
 }
 
 void Sample3DSceneRenderer::CreateDeviceDependentResources()
 {
+
 	// Load shaders asynchronously.
 	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
 	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
@@ -213,6 +220,65 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				)
 			);
 	});
+
+	loadVSTask = DX::ReadDataAsync(L"SampleVertexShader1.cso");
+	// After the vertex shader file is loaded, create the shader and input layout.
+	createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateVertexShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_vertexShader1
+			)
+		);
+
+		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateInputLayout(
+				vertexDesc,
+				ARRAYSIZE(vertexDesc),
+				&fileData[0],
+				fileData.size(),
+				&m_inputLayout
+			)
+		);
+		});
+
+	loadVSTask = DX::ReadDataAsync(L"SampleVertexShader2.cso");
+	// After the vertex shader file is loaded, create the shader and input layout.
+	createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateVertexShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_vertexShader2
+			)
+		);
+
+		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateInputLayout(
+				vertexDesc,
+				ARRAYSIZE(vertexDesc),
+				&fileData[0],
+				fileData.size(),
+				&m_inputLayout
+			)
+		);
+		});
+
 
 	// After the pixel shader file is loaded, create the shader and constant buffer.
 	auto createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
