@@ -254,108 +254,108 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	);
 		});
 
-	//loadVSTask = DX::ReadDataAsync(L"SampleVertexShader1.cso");
-	//loadPSTask = DX::ReadDataAsync(L"SamplePixelShader1.cso");
-	//// After the vertex shader file is loaded, create the shader and input layout.
-	//createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreateVertexShader(
-	//			&fileData[0],
-	//			fileData.size(),
-	//			nullptr,
-	//			&m_vertexShader1
-	//		)
-	//	);
+	loadVSTask = DX::ReadDataAsync(L"SampleVertexShader1.cso");
+	loadPSTask = DX::ReadDataAsync(L"SamplePixelShader1.cso");
+	// After the vertex shader file is loaded, create the shader and input layout.
+	createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateVertexShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_vertexShader1
+			)
+		);
 
-	//	static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
-	//	{
-	//		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	//		{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	//	};
+		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
 
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreateInputLayout(
-	//			vertexDesc,
-	//			ARRAYSIZE(vertexDesc),
-	//			&fileData[0],
-	//			fileData.size(),
-	//			&m_inputLayout
-	//		)
-	//	);
-	//	});
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateInputLayout(
+				vertexDesc,
+				ARRAYSIZE(vertexDesc),
+				&fileData[0],
+				fileData.size(),
+				&m_inputLayout
+			)
+		);
+		});
 
 
-	//// After the pixel shader file is loaded, create the shader and constant buffer.
-	//createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreatePixelShader(
-	//			&fileData[0],
-	//			fileData.size(),
-	//			nullptr,
-	//			&m_pixelShader1
-	//		)
-	//	);
+	// After the pixel shader file is loaded, create the shader and constant buffer.
+	createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreatePixelShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_pixelShader1
+			)
+		);
 
-	//	CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreateBuffer(
-	//			&constantBufferDesc,
-	//			nullptr,
-	//			&m_constantBuffer
-	//		)
-	//	);
-	//	});
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+				&constantBufferDesc,
+				nullptr,
+				&m_constantBuffer
+			)
+		);
+		});
 
-	//loadVSTask = DX::ReadDataAsync(L"SampleVertexShader2.cso");
-	//loadPSTask = DX::ReadDataAsync(L"SamplePixelShader2.cso");
-	//// After the vertex shader file is loaded, create the shader and input layout.
-	//createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreateVertexShader(
-	//			&fileData[0],
-	//			fileData.size(),
-	//			nullptr,
-	//			&m_vertexShader2
-	//		)
-	//	);
+	loadVSTask = DX::ReadDataAsync(L"SampleVertexShader2.cso");
+	loadPSTask = DX::ReadDataAsync(L"SamplePixelShader2.cso");
+	// After the vertex shader file is loaded, create the shader and input layout.
+	createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateVertexShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_vertexShader2
+			)
+		);
 
-	//	static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
-	//	{
-	//		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	//		{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	//	};
+		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
 
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreateInputLayout(
-	//			vertexDesc,
-	//			ARRAYSIZE(vertexDesc),
-	//			&fileData[0],
-	//			fileData.size(),
-	//			&m_inputLayout
-	//		)
-	//	);
-	//	});
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateInputLayout(
+				vertexDesc,
+				ARRAYSIZE(vertexDesc),
+				&fileData[0],
+				fileData.size(),
+				&m_inputLayout
+			)
+		);
+		});
 
-	//// After the pixel shader file is loaded, create the shader and constant buffer.
-	//createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreatePixelShader(
-	//			&fileData[0],
-	//			fileData.size(),
-	//			nullptr,
-	//			&m_pixelShader2
-	//		)
-	//	);
+	// After the pixel shader file is loaded, create the shader and constant buffer.
+	createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData) {
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreatePixelShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_pixelShader2
+			)
+		);
 
-	//	CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
-	//	DX::ThrowIfFailed(
-	//		m_deviceResources->GetD3DDevice()->CreateBuffer(
-	//			&constantBufferDesc,
-	//			nullptr,
-	//			&m_constantBuffer
-	//		)
-	//	);
-	//	});
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+				&constantBufferDesc,
+				nullptr,
+				&m_constantBuffer
+			)
+		);
+		});
 
 	
 
@@ -376,20 +376,6 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 			{XMFLOAT3(0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
 			{XMFLOAT3(0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
 		};
-
-	//VertexPositionColor cubeVertices[(GRID_SIZE + 1) * 4];
-	//int index = 0;
-
-	//for (int i = 0; i <= GRID_SIZE; i++)
-	//{
-	//	cubeVertices[index].pos = XMFLOAT3(GRID_SIZE * GRID_SPACING / 2, -GRID_SIZE * GRID_SPACING / 2 + i * GRID_SPACING, 0);
-	//	cubeVertices[index].color = XMFLOAT3(1, 1, 1);
-	//	index++;
-
-	//	cubeVertices[index].pos = XMFLOAT3(-GRID_SIZE * GRID_SPACING / 2, -GRID_SIZE * GRID_SPACING / 2 + i * GRID_SPACING, 0);
-	//	cubeVertices[index].color = XMFLOAT3(1, 1, 1);
-	//	index++;
-	//}
 
 	D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
 	vertexBufferData.pSysMem = cubeVertices;
